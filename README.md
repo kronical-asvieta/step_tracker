@@ -6,12 +6,12 @@ idk why I'm doing this
 
 ## Features:
 
-h:  Display a list of commands
-w:  Writes a step count into the csv
-q:  Exit the program
-ls: Displays the current full csv
-r: Removes a step count from the csv
-m: Modifies a step count from the csv
+h:  Display a list of commands  
+w:  Writes a step count into the csv  
+q:  Exit the program  
+ls: Displays the current full csv  
+r: Removes a step count from the csv  
+m: Modifies a step count from the csv  
 
 ---
 
