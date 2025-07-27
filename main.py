@@ -1,23 +1,65 @@
 import datetime
 import csv
 
-date = datetime.date.today()
+current_date = datetime.date.today()
+
+def load_data():
+    with open('data.csv', newline='') as csvfile:
+        return list(csv.DictReader(csvfile))
+
+def update_data(rows):
+    with open('data.csv', 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=['date', 'steps'])
+        writer.writeheader()
+        writer.writerows(rows)
+
 
 class Read:
     @staticmethod
     def full_stat():
-        with open('data.csv', newline='') as csvfile:
-            reader = csv.reader(csvfile, delimiter=',')
-            for row in reader:
-                print(row)
+        rows = load_data()
+        for row in rows:
+            print(f"Date: {row['date']}; Steps: {row['steps']}")
 
 class Write:
     @staticmethod
     def write_steps():
         inputted_steps = int(input("Enter today's step count: "))
+
         with open('data.csv', 'a', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
-            writer.writerow([date, inputted_steps])
+            writer.writerow([current_date, inputted_steps])
+    
+    @staticmethod
+    def remove_steps():
+        inputted_date = input("Enter the date you'd like to remove the steps of: ")
+
+        rows = load_data()
+        updated_rows = [row for row in rows if row['date'] != inputted_date]
+
+        if len(updated_rows) == len(rows):
+            print("Date not found in the database")
+            return
+
+        with open('data.csv', 'w', newline='') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=['date', 'steps'])
+            writer.writeheader()
+            writer.writerows(updated_rows)
+        
+        print(f"Removed entry for {inputted_date}")
+    
+    @staticmethod
+    def modify_steps():
+        inputted_date = input("Enter the date you'd like to modify the steps of: ")
+        inputted_steps = int(input("Enter the new amount of steps: "))
+
+        rows = load_data()
+        for row in rows:
+            if row['date'] == inputted_date:
+                print(f"Replaced {row['date']}'s {row['steps']} steps with {inputted_steps}.")
+                row['steps'] = inputted_steps
+
+                update_data(rows)
 
 def display_help():
     print("\nm:  Modifies a step count")
@@ -41,6 +83,15 @@ user_input = input("> ")
 while user_input != "q":
     if user_input == "h":
         display_help()
-    if user_input == "w":
+    elif user_input == "w":
         Write.write_steps()
+    elif user_input == "ls":
+        Read.full_stat()
+    elif user_input == "r":
+        Write.remove_steps()
+    elif user_input == "m":
+        Write.modify_steps()
+    else:
+        print("Unknown command. Enter 'h' for help")
+
     user_input = input("> ")

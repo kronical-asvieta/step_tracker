@@ -6,16 +6,17 @@ idk why I'm doing this
 
 ## Features:
 
-- none ( so far )
+h:  Display a list of commands  
+w:  Writes a step count into the csv  
+q:  Exit the program  
+ls: Displays the current full csv  
+r: Removes a step count from the csv  
+m: Modifies a step count from the csv  
 
 ---
 
 ## TO-DO:
 - Figure out the current date and fetch user input, then write both into a csv file
 - Options:
-    - w: Writes a step count into the csv
-    - r: Removes a step count from the csv
-    - m: Modified a step count from the csv
     - hi: Displays the current highest step count
     - lo: Displays the current lowest step count
-    - ls: Displays the current full csv
