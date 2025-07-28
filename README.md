@@ -12,11 +12,11 @@ q:  Exit the program
 ls: Displays the current full csv  
 r: Removes a step count from the csv  
 m: Modifies a step count from the csv  
+hi: Displays the current highest step count  
 
 ---
 
 ## TO-DO:
 - differentiate between creating a step entry for the current date vs. a custom one (detect whether the date is in the future or not)
-- Options:
-    - hi: Displays the current highest step count
-    - lo: Displays the current lowest step count
+- lo: Displays the current lowest step count
+- Add a way of clearing the entire database maybe

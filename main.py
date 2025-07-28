@@ -21,6 +21,16 @@ class Read:
         for row in rows:
             print(f"Date: {row['date']}; Steps: {row['steps']}")
 
+    @staticmethod
+    def highest():
+        rows = load_data()
+        current_max = None
+        for row in rows:
+            if current_max is None or int(row['steps']) > current_max:
+                current_max = int(row['steps'])
+        
+        print(f"Highest step count: {current_max}")
+
 class Write:
     @staticmethod
     def write_steps():
@@ -91,6 +101,8 @@ while user_input != "q":
         Write.remove_steps()
     elif user_input == "m":
         Write.modify_steps()
+    elif user_input == "hi":
+        Read.highest()
     else:
         print("Unknown command. Enter 'h' for help")
 
