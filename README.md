@@ -6,17 +6,17 @@ Useful for watches, pedometers or other fitness trackers without bluetooth integ
 
 ## Features:
 
-h:  Display a list of commands  
-w:  Writes a step count into the csv  
-q:  Exit the program  
-ls: Displays the current full csv  
-r: Removes a step count from the csv  
-m: Modifies a step count from the csv  
+- Write a step count into the database (current/custom date)  
+- Remove a step count from the database  
+- Show the step count of a specific date  
+- Modify a step count from the database  
+- Display the current full database  
+- Display the current highest step count  
+- Display the current lowest step count  
 
 ---
 
 ## TO-DO:
-- differentiate between creating a step entry for the current date vs. a custom one (detect whether the date is in the future or not)
-- Options:
-    - hi: Displays the current highest step count
-    - lo: Displays the current lowest step count
+- Add a way of clearing the entire database maybe
+- Maybe add a sorting algorithm
+- More input error handling
