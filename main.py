@@ -13,6 +13,14 @@ def update_data(rows):
         writer.writeheader()
         writer.writerows(rows)
 
+def print_steps(steps):
+    if steps == 1:
+        return "1 step"
+    elif steps >= 0:
+        return f"{steps} steps"
+    else:
+        return f"{steps} steps.. I don't even know how you did that"
+
 
 class Read:
     @staticmethod
@@ -29,16 +37,55 @@ class Read:
             if current_max is None or int(row['steps']) > current_max:
                 current_max = int(row['steps'])
         
-        print(f"Highest step count: {current_max}")
+        print(f"Highest step count: {print_steps(current_max)}")
+
+    @staticmethod
+    def lowest():
+        rows = load_data()
+        current_min = None
+        for row in rows:
+            if current_min is None or int(row['steps']) < current_min:
+                current_min = int(row['steps'])
+        
+        print(f"Lowest step count: {print_steps(current_min)}")
+
+    @staticmethod
+    def show_date():
+        entered_date = input("Enter the date you're looking for: ")
+        rows = load_data()
+        for row in rows:
+            if row['date'] == entered_date:
+                print(f"{entered_date}'s step count: {print_steps(row['steps'])}")
 
 class Write:
     @staticmethod
     def write_steps():
-        inputted_steps = int(input("Enter today's step count: "))
+        enter_type = input("Enter date (today: t / custom date): ")
 
         with open('data.csv', 'a', newline='') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
-            writer.writerow([current_date, inputted_steps])
+
+            if enter_type == "t" or enter_type == "today":
+                inputted_steps = int(input("Enter step count: "))
+                writer.writerow([current_date, inputted_steps])
+            else:
+                #from datetime import datetime
+
+                try:
+                    datetime.datetime.strptime(enter_type, "%Y-%m-%d")
+                except ValueError:
+                    print("Invalid date format. Use yyyy-mm-dd.")
+                    return
+
+                inputted_steps = int(input("Enter step count: "))
+                rows = load_data()
+                for row in rows:
+                    if row['date'] == enter_type:
+                        print(f"Replaced {row['date']}'s {print_steps(row['steps'])} steps with {print_steps(inputted_steps)}.")
+                        row['steps'] = inputted_steps
+                        update_data(rows)
+                        return
+                writer.writerow([enter_type, inputted_steps])
     
     @staticmethod
     def remove_steps():
@@ -66,10 +113,12 @@ class Write:
         rows = load_data()
         for row in rows:
             if row['date'] == inputted_date:
-                print(f"Replaced {row['date']}'s {row['steps']} steps with {inputted_steps}.")
+                print(f"Replaced {row['date']}'s {print_steps(row['steps'])} with {print_steps(inputted_steps)}.")
                 row['steps'] = inputted_steps
-
                 update_data(rows)
+                return
+        
+        print(f"\"{inputted_date}\" not found in the database")
 
 def display_help():
     print("\nm:  Modifies a step count")
@@ -103,6 +152,10 @@ while user_input != "q":
         Write.modify_steps()
     elif user_input == "hi":
         Read.highest()
+    elif user_input == "lo":
+        Read.lowest()
+    elif user_input == "s":
+        Read.show_date()
     else:
         print("Unknown command. Enter 'h' for help")
 
